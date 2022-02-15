@@ -1,6 +1,6 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const { Schema, model } = mongoose
+const { Schema, model } = mongoose;
 
 const userSchema = new Schema(
   {
@@ -14,6 +14,6 @@ const userSchema = new Schema(
   {
     timestamps: true, // adds and manages automatically createdAt and updatedAt fields
   }
-)
+);
 
-export default model("User", userSchema) // this model is now automatically linked to the "users" collection, if the collection is not there it will be automatically created
+export default model("User", userSchema); // this model is now automatically linked to the "users" collection, if the collection is not there it will be automatically created
