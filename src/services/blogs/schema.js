@@ -13,7 +13,7 @@ const blogSchema = new Schema(
     },
     readTime: {
       value: { type: Number, required: true },
-      unit: { type: Number, required: true },
+      unit: { type: String, required: true },
     },
     author: {
       name: { type: String, required: true },
