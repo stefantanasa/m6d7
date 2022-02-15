@@ -3,6 +3,8 @@ import listEndpoints from "express-list-endpoints"
 import cors from "cors"
 import mongoose from "mongoose"
 
+import usersRouter from "./services/users/index.js"
+
 const server = express()
 const port = process.env.PORT || 3001
 
@@ -12,6 +14,8 @@ server.use(cors())
 server.use(express.json())
 
 // ************************************* ROUTES ********************************************
+
+server.use("/users", usersRouter)
 
 // ************************************** ERROR HANDLERS ***********************************
 

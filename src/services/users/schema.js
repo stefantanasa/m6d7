@@ -7,7 +7,7 @@ const userSchema = new Schema(
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     email: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
+    dateOfBirth: { type: Date, required: false },
     age: { type: Number, min: 18, max: 65, required: true },
     professions: [String],
   },
