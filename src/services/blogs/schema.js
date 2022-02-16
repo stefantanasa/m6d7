@@ -8,12 +8,11 @@ const blogSchema = new Schema(
     title: { type: String, required: true },
     cover: {
       type: String,
-      required: true,
       default: "https://picsum.photos/200/300",
     },
     readTime: {
       value: { type: Number, required: true },
-      unit: { type: String, required: true },
+      unit: { type: String, default: "minutes" },
     },
     author: {
       name: { type: String, required: true },
@@ -24,6 +23,12 @@ const blogSchema = new Schema(
       },
     },
     content: { type: String, required: true },
+    blogComments: [
+      {
+        text: { type: String, required: true },
+        datePosted: { type: Date, default: Date.now() },
+      },
+    ],
   },
   { timestamps: true }
 );

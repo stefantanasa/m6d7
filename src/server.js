@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 
 import usersRouter from "./services/users/index.js";
 import blogsRouter from "./services/blogs/index.js";
+import booksRouter from "./services/books/index.js";
+import commentsRouter from "./services/comments/index.js";
 
 const server = express();
 const port = process.env.PORT || 3001;
@@ -18,6 +20,8 @@ server.use(express.json());
 
 server.use("/users", usersRouter);
 server.use("/blogs", blogsRouter);
+server.use("/books", booksRouter);
+server.use("/comments", commentsRouter);
 
 // ************************************** ERROR HANDLERS ***********************************
 

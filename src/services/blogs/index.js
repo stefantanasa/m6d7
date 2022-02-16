@@ -1,6 +1,7 @@
 import express from "express";
 import createHttpError from "http-errors";
 import BlogsModel from "./schema.js";
+import CommentsModel from "../comments/schema.js";
 
 const blogsRouter = express.Router();
 
@@ -31,9 +32,10 @@ blogsRouter.get("/:blogId", async (req, res, next) => {
     if (blog) {
       res.send(blog);
     } else {
-      next(createHttpError(404, `Blog with id ${blogId} not found!`));
+      res.send(`Blog with id ${blogId} not found!`);
     }
   } catch (error) {
+    console.log("this is the error: ", error);
     next(error);
   }
 });
@@ -68,4 +70,80 @@ blogsRouter.delete("/:blogId", async (req, res, next) => {
   }
 });
 
+blogsRouter.post("/:blogId/blogComment", async (req, res, next) => {
+  try {
+    const blogsComment = await CommentsModel.findById(req.body.commentId, {
+      _id: 0,
+    });
+    if (blogsComment) {
+      const commentToInsert = {
+        ...blogsComment.toObject(),
+      };
+      const modifiedBlog = await BlogsModel.findByIdAndUpdate(
+        req.params.blogId,
+        { $push: { blogComments: commentToInsert } },
+        { new: true }
+      );
+      if (modifiedBlog) {
+        res.send(modifiedBlog);
+      } else {
+        next(
+          createHttpError(404, `User with Id ${req.params.userId} not found!`)
+        );
+      }
+    } else {
+      next(
+        createHttpError(404, `Blog with user ${req.params.blogId} not found`)
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+blogsRouter.get("/:blogId/blogComment", async (req, res, next) => {
+  try {
+    const blog = await BlogsModel.findById(req.params.blogId);
+    if (blog) {
+      res.send(blog.blogComments);
+    } else {
+      next(
+        createHttpError(404, `blog with Id ${req.params.blogId} not found!`)
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+blogsRouter.get("/:blogId/blogComment/:commentId", async (req, res, next) => {
+  console.log(req.params.commentId);
+  try {
+    const blog = await BlogsModel.findById(req.params.blogComment);
+    if (blog) {
+      const blogComment = blog.blogComment.find(
+        (comment) => comment._id.toString() == req.params.commentId // You CANNOT compare a string (req.params.bookId) with an ObjectID (book._id) --> to compare the two things a solution could be to convert ObjectId into string
+      );
+      if (blogComment) {
+        res.send(blogComment);
+      } else {
+        next(
+          createHttpError(
+            404,
+            `The omment with Id ${req.params.commentId} not found in purchase history!`
+          )
+        );
+      }
+    } else {
+      next(
+        createHttpError(
+          404,
+          `Comment with Id ${req.params.commentId} not found!`
+        )
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 export default blogsRouter;

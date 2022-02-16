@@ -10,10 +10,19 @@ const userSchema = new Schema(
     dateOfBirth: { type: Date, required: false },
     age: { type: Number, min: 18, max: 65, required: true },
     professions: [String],
+    purchaseHistory: [
+      {
+        asin: { type: String },
+        title: { type: String },
+        category: { type: String },
+        purchaseDate: { type: Date },
+      },
+    ],
   },
   {
     timestamps: true, // adds and manages automatically createdAt and updatedAt fields
   }
 );
 
-export default model("User", userSchema); // this model is now automatically linked to the "users" collection, if the collection is not there it will be automatically created
+export default model("User", userSchema);
+// this model is now automatically linked to the "users" collection, if the collection is not there it will be automatically created
