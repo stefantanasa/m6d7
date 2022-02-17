@@ -117,11 +117,11 @@ blogsRouter.get("/:blogId/blogComment", async (req, res, next) => {
 });
 
 blogsRouter.get("/:blogId/blogComment/:commentId", async (req, res, next) => {
-  console.log(req.params.commentId);
   try {
-    const blog = await BlogsModel.findById(req.params.blogComment);
+    const blog = await BlogsModel.findById(req.params.blogId);
+    console.log("Comment id: ", blog._id.toString());
     if (blog) {
-      const blogComment = blog.blogComment.find(
+      const blogComment = blog.blogComments.find(
         (comment) => comment._id.toString() == req.params.commentId // You CANNOT compare a string (req.params.bookId) with an ObjectID (book._id) --> to compare the two things a solution could be to convert ObjectId into string
       );
       if (blogComment) {
@@ -146,4 +146,37 @@ blogsRouter.get("/:blogId/blogComment/:commentId", async (req, res, next) => {
     next(error);
   }
 });
+
+// blogsRouter.get("/:blogId/blogComment/:commentId", async (req, res, next) => {
+//   try {
+//     const blog = await BlogsModel.findById(() => req.params.blogId);
+
+//     if (blog) {
+//       const blogComment = blog.blogComments.findByIdAndDelete(
+//         req.params.commentId
+//       ); // You CANNOT compare a string (req.params.bookId) with an ObjectID (book._id) --> to compare the two things a solution could be to convert ObjectId into string
+//       console.log(blogComment);
+//       if (blogComment) {
+//         res.send(blogComment);
+//       } else {
+//         next(
+//           createHttpError(
+//             404,
+//             `The omment with Id ${req.params.commentId} not found in purchase history!`
+//           )
+//         );
+//       }
+//     } else {
+//       next(
+//         createHttpError(
+//           404,
+//           `Comment with Id ${req.params.commentId} not found!`
+//         )
+//       );
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
 export default blogsRouter;
